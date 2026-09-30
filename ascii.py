@@ -1,36 +1,38 @@
-"""Turns a photo into ascii.txt for the profile card.
+"""Turns a portrait into ascii.txt for the profile card.
 
-    python ascii.py path/to/photo.jpg            # portrait
-    python ascii.py --initials SS                # fallback monogram
+    python ascii.py portrait.png             # dark lines on a white background (recommended)
+    python ascii.py portrait.png --invert    # light subject on a black background
+    python ascii.py --initials SS            # fallback monogram
 
-Crop the photo to a roughly square head-and-shoulders shot first; a plain
-background gives the cleanest result; paint the background black.
+Works best with a high-contrast, head-and-shoulders illustration on a plain
+white background (see PORTRAIT_PROMPT.md). Photos with busy backgrounds turn
+into noise at this size.
 """
 import sys
 from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont, ImageOps
 
-COLS, ROWS = 36, 21  # fits the 375px-wide left column at 16px Consolas, same height as the info rows
+COLS, ROWS = 60, 30  # rendered in a smaller font than the info column, see today.py
 RAMP = " .'`^\",:;Il!i~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$"
 
 
-def to_ascii(img):
-    img = ImageOps.autocontrast(img.convert("L"))
-    img = img.resize((COLS, ROWS))
+def to_ascii(img, invert=False):
+    img = ImageOps.autocontrast(img.convert("L"), cutoff=1)
+    img = img.resize((COLS, ROWS), Image.LANCZOS)
     px = img.load()
     rows = []
     for y in range(ROWS):
         row = ""
         for x in range(COLS):
-            # bright pixels -> dense glyphs, so the portrait reads as lit on the dark card
-            row += RAMP[int(px[x, y] / 256 * len(RAMP))]
+            v = px[x, y] if invert else 255 - px[x, y]  # denser glyph = more "ink"
+            row += RAMP[int(v / 256 * len(RAMP))]
         rows.append(row.rstrip())
     return "\n".join(rows)
 
 
 def initials_image(text):
-    img = Image.new("L", (COLS * 10, ROWS * 18), 0)
+    img = Image.new("L", (COLS * 10, ROWS * 18), 255)
     draw = ImageDraw.Draw(img)
     try:
         font = ImageFont.truetype("arialbd.ttf", 300)
@@ -38,19 +40,21 @@ def initials_image(text):
         font = ImageFont.load_default()
     box = draw.textbbox((0, 0), text, font=font)
     w, h = box[2] - box[0], box[3] - box[1]
-    draw.text(((img.width - w) / 2 - box[0], (img.height - h) / 2 - box[1]), text, font=font, fill=255)
+    draw.text(((img.width - w) / 2 - box[0], (img.height - h) / 2 - box[1]), text, font=font, fill=0)
     return img
 
 
 def main():
-    if len(sys.argv) >= 3 and sys.argv[1] == "--initials":
-        img = initials_image(sys.argv[2])
-    elif len(sys.argv) == 2:
-        img = Image.open(sys.argv[1])
+    args = [a for a in sys.argv[1:] if a != "--invert"]
+    invert = "--invert" in sys.argv
+    if len(args) == 2 and args[0] == "--initials":
+        img = initials_image(args[1])
+    elif len(args) == 1:
+        img = Image.open(args[0])
     else:
         sys.exit(__doc__)
     out = Path(__file__).with_name("ascii.txt")
-    out.write_text(to_ascii(img) + "\n", encoding="utf-8")
+    out.write_text(to_ascii(img, invert) + "\n", encoding="utf-8")
     print(out.read_text(encoding="utf-8"))
 
 

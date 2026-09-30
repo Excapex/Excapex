@@ -138,8 +138,11 @@ def svg(theme, stats):
     e = html.escape
     lines = []
     y0, lh = 30, 20
+    # the portrait uses a smaller font so it gets more detail but spans the same height as the info column
+    art_lh = (len(INFO) - 1) * lh / max(len(art) - 1, 1)
+    art_fs = round(art_lh * 0.8, 1)
     for i, row in enumerate(art):
-        lines.append(f'<tspan x="15" y="{y0 + i * lh}">{e(row)}</tspan>')
+        lines.append(f'<tspan x="15" y="{y0 + i * art_lh:.1f}">{e(row)}</tspan>')
     right = []
     y = y0
     for key, value in INFO:
@@ -159,7 +162,7 @@ def svg(theme, stats):
                 f'<tspan class="cc"> {dots} </tspan><tspan class="value">{e(v)}</tspan>'
             )
         y += lh
-    height = max(y0 + len(art) * lh, y) + 10
+    height = y + 10
     return f"""<?xml version='1.0' encoding='UTF-8'?>
 <svg xmlns="http://www.w3.org/2000/svg" font-family="ConsolasFallback,Consolas,monospace" width="985px" height="{height}px" font-size="16px">
 <style>
@@ -168,7 +171,7 @@ def svg(theme, stats):
 .cc {{fill: {t['dim']};}} text, tspan {{white-space: pre;}}
 </style>
 <rect width="985px" height="{height}px" fill="{t['bg']}" rx="15"/>
-<text x="15" y="30" fill="{t['fg']}" class="ascii">{''.join(lines)}</text>
+<text x="15" y="30" fill="{t['fg']}" font-size="{art_fs}px" class="ascii">{''.join(lines)}</text>
 <text x="390" y="30" fill="{t['fg']}">{''.join(right)}</text>
 </svg>
 """
