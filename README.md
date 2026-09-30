@@ -22,7 +22,7 @@ Commercial products live in private repos. Each showcase repo has screenshots, a
 </p>
 
 ### Right now
-- 3rd-year Information Technologies at PMF, University of Novi Sad
+- 4th-year Information Technologies at PMF, University of Novi Sad
 - Developer at a digital agency: websites, automations and SEO for real clients
 - Level Up Academy, current cohort
 - Open to internships and junior backend / full-stack roles
