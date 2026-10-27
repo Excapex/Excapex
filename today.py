@@ -31,7 +31,7 @@ INFO = [
     ("Languages.Stack", "Spring Boot, Next.js, PostgreSQL"),
     ("Languages.Real", "Serbian, English (C1)"),
     ("gap", ""),
-    ("Projects.Shipping", "Glamour, EvidLab, Saglasnik"),
+    ("Projects.Shipping", "Glamour, EvidLab, ProjectLens"),
     ("Hobbies", "Rowing, choir, guitar, investing"),
     ("section", "Contact"),
     ("Email", "sergej.stojanovic.04.ns@gmail.com"),
