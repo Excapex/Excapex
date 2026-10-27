@@ -10,7 +10,7 @@
 | | Project | What it is | Stack |
 |---|---|---|---|
 | 💇 | **[Glamour](https://github.com/Excapex/glamour-showcase)** | Multi-tenant booking & operations SaaS for salons. Built solo, now developed by a team of two; MVP-ready, with an embeddable booking widget. | Java 21 · Spring Boot · PostgreSQL · Next.js · Stripe |
-| 🧪 | **[EvidLab](https://github.com/Excapex/evidlab-showcase)** | Lab inventory in pilot use at the PMF Novi Sad Department of Chemistry since October 2026. I led a team of 3. [Website](https://evidlab.vercel.app) · [Live demo](https://evidlab-demo-web.onrender.com) | Spring Boot · React/TS · PostgreSQL |
+| 🧪 | **[EvidLab](https://github.com/Excapex/evidlab-showcase)** | Lab inventory in pilot use at the PMF Novi Sad Departments of Chemistry and Biology since October 2026. I led a team of 3. [Website](https://evidlab.vercel.app) · [Live demo](https://evidlab-demo-web.onrender.com) | Spring Boot · React/TS · PostgreSQL |
 | 🔥 | **[ProjectLens](https://github.com/Excapex/projectlens-showcase)** | AI copilot for reviewing fire-protection designs for building permits (formerly Saglasnik). Cuts one review from about 15 hours to about 20 minutes on real projects. Born at the Grok Bot Serbia Hackathon. | Python · FastAPI · React · LLMs |
 
 Commercial products live in private repos. Each showcase repo has screenshots, architecture and the engineering decisions behind it. Happy to walk through the code on a call.
